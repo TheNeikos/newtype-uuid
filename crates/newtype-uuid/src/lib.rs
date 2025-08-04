@@ -140,6 +140,7 @@ use uuid::{Uuid, Version};
 #[repr(transparent)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(feature = "serde", serde(transparent, bound = ""))]
+#[derive(PartialEq, Eq, PartialOrd, Ord)]
 pub struct TypedUuid<T: TypedUuidKind> {
     uuid: Uuid,
     _phantom: PhantomData<T>,
@@ -378,29 +379,6 @@ impl<T: TypedUuidKind> TypedUuid<T> {
 // ---
 // Trait impls
 // ---
-
-impl<T: TypedUuidKind> PartialEq for TypedUuid<T> {
-    #[inline]
-    fn eq(&self, other: &Self) -> bool {
-        self.uuid.eq(&other.uuid)
-    }
-}
-
-impl<T: TypedUuidKind> Eq for TypedUuid<T> {}
-
-impl<T: TypedUuidKind> PartialOrd for TypedUuid<T> {
-    #[inline]
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        Some(self.uuid.cmp(&other.uuid))
-    }
-}
-
-impl<T: TypedUuidKind> Ord for TypedUuid<T> {
-    #[inline]
-    fn cmp(&self, other: &Self) -> core::cmp::Ordering {
-        self.uuid.cmp(&other.uuid)
-    }
-}
 
 impl<T: TypedUuidKind> Hash for TypedUuid<T> {
     #[inline]
